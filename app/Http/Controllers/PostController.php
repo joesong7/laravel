@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,6 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
+       
      $post= Post::get();
      return $post;
     }
@@ -36,6 +38,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $post =new Post();
         $post ->name =$request->name;
         $post ->note =$request->note;
@@ -93,8 +96,18 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $post=Post::findOrFail($id);
+      
+        if($post->delete()){
+            return response()->json(['message' => '已刪除']);
+        }
+    }
+    public function select($name)
+    {
+        $post=Post::where('name','like','%'.$name.'%')->get();
+        return $post;
+         
     }
 }
