@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Post;
 use App\Models\User;
+use App\Models\Address;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class AddressController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-       
-    $post = Post::all();
-
-     return $post;
+        
     }
 
     /**
@@ -39,35 +35,28 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
-        $post =new Post();
-        $post ->name =$request->name;
-        $post ->note =$request->note;
-
-        if($post->save()){
-            return $post;
-        }
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function show($id) 
+    public function show($id)
     {
-     $post=Post::findOrFail($id);
-      return $post;
+        $address = User::find($id)->address;
+        return $address;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Address $address)
     {
         //
     }
@@ -76,39 +65,22 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, Address $address)
     {
-
-      $post=Post::findOrFail($id);
-      $post->name = $request->input('name');
-      $post->note= $request->input('note');
-      if($post->save()){
-           return $post;
-      }
-        
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Address $address)
     {
-        $post=Post::findOrFail($id);
-      
-        if($post->delete()){
-            return response()->json(['message' => '已刪除']);
-        }
-    }
-    public function select($name)
-    {
-        $post=Post::where('name','like','%'.$name.'%')->get();
-        return $post;
-         
+        //
     }
 }
