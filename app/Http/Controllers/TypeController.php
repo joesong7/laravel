@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
-use App\Models\Address;
+
+use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddressController extends Controller
+class TypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,10 @@ class AddressController extends Controller
      */
     public function index()
     {
-        
+       $types= Type::all();
+       return response([
+           'data' => $types //輸出使用data包住
+       ],Response::HTTP_OK);
     }
 
     /**
@@ -25,8 +29,8 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
-    }
+       
+        }
 
     /**
      * Store a newly created resource in storage.
@@ -36,30 +40,43 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this -> validate($request,[
+            //另一種驗證方法 使用陣列傳入驗證關鍵字
+            'name'=>[
+               'required',
+               'max:50',
+               Rule::unique('type','name')
+            ],
+            'sort'=>'nullable|integer',
+        ]);
+        if(!isset($request->sort)){
+            $max =Type::max('sort');
+            $request['sort']=$max +1;
+        }
+        $type= Type::create($request->all());
+        return response([
+            'data'=>$type
+        ],Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Type $type)
     {
-        $address = User::find($id)->address;
-        return response([
-            'data' => $address //輸出使用data包住
-        ],Response::HTTP_OK);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit(Address $address)
+    public function edit(Type $type)
     {
         //
     }
@@ -68,27 +85,21 @@ class AddressController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Type $type)
     {
-        
-      $address =Address::findOrFail($id);
-      $address->address= $request->input('address');
-      $address->phone= $request->input('phone');
-      if($address->save()){
-          return $address;
-      }
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy(Type $type)
     {
         //
     }
