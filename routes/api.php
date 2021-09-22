@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\BookController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,5 +35,7 @@ Route::get("/post/{id}",[PostController::class,'show']);
 Route::get("/address/{id}",[AddressController::class,'show']);     
 Route::put("/address/{id}",[AddressController::class,'update']); 
 
-Route::get("/type",[AddressController::class,'index']); 
-Route::post("/type",[AddressController::class,'store']); 
+Route::get("/book",[BookController::class,'index']); 
+Route::get("/book/select/{title}",[BookController::class,'select']); 
+Route::get("/book/{id}",[BookController::class,'show']); 
+
